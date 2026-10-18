@@ -4,6 +4,7 @@ import "time"
 
 type Booking struct {
 	BookingID  int64
+	GuestID    int64
 	Status     BookingStatus
 	Items      []BookingItem
 	HotelID    string
