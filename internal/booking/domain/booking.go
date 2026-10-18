@@ -10,7 +10,7 @@ type Booking struct {
 	CheckIn    time.Time
 	CheckOut   time.Time
 	TotalMinor int64 // will be stored with cents
-	Currancy   string
+	Currency   string
 }
 type BookingStatus string
 
