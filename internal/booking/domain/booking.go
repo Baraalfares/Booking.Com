@@ -3,12 +3,14 @@ package domain
 import "time"
 
 type Booking struct {
-	BookingID int64
-	Status    BookingStatus
-	Items     []BookingItem
-	HotelID   string
-	CheckIn   time.Time
-	CheckOut  time.Time
+	BookingID  int64
+	Status     BookingStatus
+	Items      []BookingItem
+	HotelID    string
+	CheckIn    time.Time
+	CheckOut   time.Time
+	TotalMinor int64 // will be stored with cents
+	Currancy   string
 }
 type BookingStatus string
 
@@ -20,7 +22,8 @@ const (
 )
 
 type BookingItem struct {
-	CategoryID string
-	RoomCount  int
-	GuestCount int
+	CategoryID     string
+	RoomCount      int
+	GuestCount     int
+	LineTotalMinor int64
 }
