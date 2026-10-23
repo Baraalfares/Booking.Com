@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	"example.com/bookingcom/internal/booking/domain"
+	"example.com/bookingcom/internal/domain"
 )
 
 type ListHotelCategoriesResult struct {

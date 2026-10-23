@@ -50,7 +50,7 @@ The part before the method name, `(uc ListHotelCategories)`, is called a **recei
 
 ## Why are the repository interfaces beside the use case?
 
-Go files in the same directory normally belong to one package. Here, [repository.go](../internal/booking/application/repository.go) and [list_hotel_categories.go](../internal/booking/application/list_hotel_categories.go) both belong to `package application`, even though they define different kinds of things.
+Go files in the same directory normally belong to one package. Here, [repository.go](../services/booking/internal/application/repository.go) and [list_hotel_categories.go](../services/booking/internal/application/list_hotel_categories.go) both belong to `package application`, even though they define different kinds of things.
 
 The use case decides which data operations it needs. It currently needs:
 
@@ -96,4 +96,4 @@ Guest
 
 The handler will translate `ErrHotelNotFound` into `404 Not Found`. An existing hotel with no categories will return `200 OK` with an empty categories list. We will choose the exact JSON response shape when we write the handler. This endpoint is a simple listing; date-based availability will be a later operation.
 
-At the moment, the [domain models](../internal/booking/domain), repository interfaces, and use case exist. The HTTP handler and database adapters are still to be built. The next useful check is a use case test with fake repositories, so we can verify its behavior without a database.
+At the moment, the [domain models](../services/booking/internal/domain), repository interfaces, and use case exist. The HTTP handler and database adapters are still to be built. The next useful check is a use case test with fake repositories, so we can verify its behavior without a database.

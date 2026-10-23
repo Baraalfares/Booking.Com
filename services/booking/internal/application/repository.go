@@ -3,7 +3,7 @@ package application
 import (
 	"context"
 
-	"example.com/bookingcom/internal/booking/domain"
+	"example.com/bookingcom/internal/domain"
 )
 
 type HotelRepository interface {

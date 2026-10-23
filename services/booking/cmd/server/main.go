@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"example.com/bookingcom/internal/booking/config"
+	"example.com/bookingcom/internal/config"
 )
 
 func main() {

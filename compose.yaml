@@ -24,7 +24,7 @@ services:
       FLYWAY_USER: booking
       FLYWAY_PASSWORD: booking_dev_only
     volumes:
-      - ./db/booking/migrations:/flyway/sql:ro
+      - ./services/booking/db/migrations:/flyway/sql:ro
     depends_on:
       booking-db:
         condition: service_healthy

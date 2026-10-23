@@ -17,10 +17,10 @@ Run these commands from the `Booking.Com` project root:
 ```bash
 docker compose up -d booking-db
 python3 -m venv /tmp/booking-data-venv
-/tmp/booking-data-venv/bin/pip install -r db/booking/seeds/requirements.txt
-/tmp/booking-data-venv/bin/python db/booking/seeds/export_overture_hotels.py --limit 50000
+/tmp/booking-data-venv/bin/pip install -r services/booking/db/seeds/requirements.txt
+/tmp/booking-data-venv/bin/python services/booking/db/seeds/export_overture_hotels.py --limit 50000
 docker compose cp /tmp/overture_hotels.csv booking-db:/tmp/overture_hotels.csv
-docker compose exec -T booking-db psql -X -v ON_ERROR_STOP=1 -U booking -d booking < db/booking/seeds/load_overture_hotels.sql
+docker compose exec -T booking-db psql -X -v ON_ERROR_STOP=1 -U booking -d booking < services/booking/db/seeds/load_overture_hotels.sql
 ```
 
 The CSV stays outside Git. The SQL loader runs in one transaction and uses deterministic IDs with `ON CONFLICT DO NOTHING`, so it can be rerun without duplicating hotels, categories, or rooms.
