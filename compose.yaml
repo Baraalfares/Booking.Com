@@ -1,0 +1,32 @@
+services:
+  booking-db:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: booking
+      POSTGRES_USER: booking
+      POSTGRES_PASSWORD: booking_dev_only
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - booking_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U booking -d booking"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+
+  booking-migrate:
+    image: flyway/flyway:13.9.0-alpine
+    command: migrate
+    environment:
+      FLYWAY_URL: jdbc:postgresql://booking-db:5432/booking
+      FLYWAY_USER: booking
+      FLYWAY_PASSWORD: booking_dev_only
+    volumes:
+      - ./db/booking/migrations:/flyway/sql:ro
+    depends_on:
+      booking-db:
+        condition: service_healthy
+volumes:
+  booking_data:
