@@ -18,10 +18,10 @@ func Load() (*Config, error) {
 
 	httpAddr := os.Getenv("HTTP_ADDR")
 	if httpAddr == "" {
-		return nil, errors.New("HTTP_ADDR environment variable not set")
+		httpAddr = ":8080"
 	}
 	return &Config{
 		DatabaseURL: os.Getenv("DATABASE_URL"),
-		HTTPAddr:    os.Getenv(":8080"),
+		HTTPAddr:    os.Getenv("HTTP_ADDR"),
 	}, nil
 }
