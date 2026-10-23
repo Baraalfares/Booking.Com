@@ -21,7 +21,7 @@ func Load() (*Config, error) {
 		httpAddr = ":8080"
 	}
 	return &Config{
-		DatabaseURL: os.Getenv("DATABASE_URL"),
-		HTTPAddr:    os.Getenv("HTTP_ADDR"),
+		DatabaseURL: databaseUrl,
+		HTTPAddr:    httpAddr,
 	}, nil
 }
