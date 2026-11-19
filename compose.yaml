@@ -4,7 +4,7 @@ services:
     environment:
       POSTGRES_DB: booking
       POSTGRES_USER: booking
-      POSTGRES_PASSWORD: booking_dev_only
+      POSTGRES_PASSWORD: ${BOOKING_DB_PASSWORD:?Set BOOKING_DB_PASSWORD in .env}
     ports:
       - "127.0.0.1:5432:5432"
     volumes:
@@ -20,13 +20,31 @@ services:
     image: flyway/flyway:13.9.0-alpine
     command: migrate
     environment:
-      FLYWAY_URL: jdbc:postgresql://booking-db:5432/booking
+      FLYWAY_URL: ${BOOKING_FLYWAY_URL:?Set BOOKING_FLYWAY_URL in .env}
       FLYWAY_USER: booking
-      FLYWAY_PASSWORD: booking_dev_only
+      FLYWAY_PASSWORD: ${BOOKING_DB_PASSWORD:?Set BOOKING_DB_PASSWORD in .env}
     volumes:
       - ./services/booking/db/migrations:/flyway/sql:ro
     depends_on:
       booking-db:
         condition: service_healthy
+  booking-api:
+    build:
+      context: ./services/booking
+    environment:
+      DATABASE_URL: ${BOOKING_DATABASE_URL:?Set BOOKING_DATABASE_URL in .env}
+      HTTP_ADDR: :8080
+      PAYMENT_WEBHOOK_SECRET: ${PAYMENT_WEBHOOK_SECRET:?Set PAYMENT_WEBHOOK_SECRET in .env}
+    ports:
+      - "127.0.0.1:8080:8080"
+    depends_on:
+      booking-migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1:8080/health/ready"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
 volumes:
   booking_data:

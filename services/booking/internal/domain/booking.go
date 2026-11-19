@@ -10,21 +10,23 @@ type Booking struct {
 	HotelID    string
 	CheckIn    time.Time
 	CheckOut   time.Time
-	TotalMinor int64 // will be stored with cents
+	TotalMinor int64
 	Currency   string
+	ExpiresAt  time.Time
 }
 type BookingStatus string
 
 const (
-	pending_payment BookingStatus = "PENDING_PAYMENT"
-	confirmed       BookingStatus = "CONFIRMED"
-	failed          BookingStatus = "FAILED"
-	expired         BookingStatus = "EXPIRED"
+	BookingStatusPendingPayment BookingStatus = "PENDING_PAYMENT"
+	BookingStatusConfirmed      BookingStatus = "CONFIRMED"
+	BookingStatusFailed         BookingStatus = "FAILED"
+	BookingStatusExpired        BookingStatus = "EXPIRED"
 )
 
 type BookingItem struct {
-	CategoryID     string
-	RoomCount      int
-	GuestCount     int
-	LineTotalMinor int64
+	CategoryID        string
+	RoomCount         int
+	GuestCount        int
+	NightlyPriceMinor int64
+	LineTotalMinor    int64
 }

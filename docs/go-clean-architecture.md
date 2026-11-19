@@ -43,8 +43,8 @@ The part before the method name, `(uc ListHotelCategories)`, is called a **recei
 | Entity or model class | `domain.Hotel`, `domain.RoomCategory` | Represent booking concepts and their data. |
 | Service class and method | `application.ListHotelCategories.Execute` | Complete one user operation. |
 | Repository interface | `application.HotelRepository`, `RoomCategoryRepository` | Describe the data operations the use case needs. |
-| Repository implementation | A future database adapter | Execute those operations against a database. |
-| REST controller | A future handler in `api` | Read HTTP input and write HTTP responses. |
+| Repository implementation | `postgres.HotelRepository`, `postgres.RoomCategoryRepository` | Execute those operations against PostgreSQL. |
+| REST controller | `api.RegisterCategoryRoutes` | Read HTTP input and write HTTP responses. |
 
 `ListHotelCategories` is an **application service**, also called a **use case**. It is not a separate microservice. The Booking microservice is the whole deployable program containing its domain, application, API, and database code. Auth and Payment will be separate microservices later.
 
@@ -64,7 +64,7 @@ type RoomCategoryRepository interface {
 }
 ```
 
-These methods are declared as interfaces in the application layer. Later, a database adapter will implement them. Go does not require an `implements` declaration: a type satisfies an interface when it has the required methods.
+These methods are declared as interfaces in the application layer. The PostgreSQL adapters implement them. Go does not require an `implements` declaration: a type satisfies an interface when it has the required methods.
 
 This arrangement lets the use case depend on the **operations it needs**, without depending on PostgreSQL, SQL queries, or HTTP.
 
@@ -94,6 +94,6 @@ Guest
   -> API handler: translate the result or error into HTTP
 ```
 
-The handler will translate `ErrHotelNotFound` into `404 Not Found`. An existing hotel with no categories will return `200 OK` with an empty categories list. We will choose the exact JSON response shape when we write the handler. This endpoint is a simple listing; date-based availability will be a later operation.
+The handler translates `ErrHotelNotFound` into `404 Not Found`. An existing hotel with no categories returns `200 OK` with an empty categories list. Date-based availability is a separate operation that also checks nightly inventory.
 
-At the moment, the [domain models](../services/booking/internal/domain), repository interfaces, and use case exist. The HTTP handler and database adapters are still to be built. The next useful check is a use case test with fake repositories, so we can verify its behavior without a database.
+The service now also has [booking and availability use cases](../services/booking/internal/application), [PostgreSQL adapters](../services/booking/internal/postgres), [HTTP handlers](../services/booking/internal/api), and [server wiring](../services/booking/cmd/server/main.go). The [service README](../services/booking/README.md) documents the routes and local setup.
